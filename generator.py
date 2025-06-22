@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 class Generator(nn.Module):
@@ -13,7 +14,7 @@ class Generator(nn.Module):
             nn.Linear(256, 512),
             nn.BatchNorm1d(512),
             nn.ReLU(),
-            nn.Linear(512, 28*28),
+            nn.Linear(512, 28 * 28),
             nn.Tanh()
         )
 
