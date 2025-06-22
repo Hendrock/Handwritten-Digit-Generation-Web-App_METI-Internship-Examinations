@@ -19,8 +19,10 @@ if st.button("Generate 5 Samples"):
     labels = torch.full((5,), digit, dtype=torch.long)
     with torch.no_grad():
         imgs = generator(noise, labels).cpu()
-    fig, axes = plt.subplots(1, 5, figsize=(10, 2))
+    imgs = (imgs + 1) / 2
+
+    fig, axes = plt.subplots(1,5, figsize=(10,2))
     for ax, img in zip(axes, imgs):
-        ax.imshow(img.squeeze(), cmap="gray")
+        ax.imshow(img.squeeze(), cmap="gray", vmin=0, vmax=1)
         ax.axis("off")
     st.pyplot(fig)
