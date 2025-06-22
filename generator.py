@@ -8,11 +8,16 @@ class Generator(nn.Module):
             nn.Linear(noise_dim + label_dim, 128),
             nn.ReLU(),
             nn.Linear(128, 256),
+            nn.BatchNorm1d(256),
             nn.ReLU(),
-            nn.Linear(256, 784),
-            nn.Tanh(),
+            nn.Linear(256, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+            nn.Linear(512, 28*28),
+            nn.Tanh()
         )
+
     def forward(self, noise, labels):
         c = self.label_emb(labels)
-        x = torch.cat((noise, c), dim=1)
+        x = torch.cat([noise, c], dim=1)
         return self.net(x).view(-1, 1, 28, 28)
