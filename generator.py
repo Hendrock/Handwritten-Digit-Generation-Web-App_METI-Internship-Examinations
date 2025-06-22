@@ -5,7 +5,7 @@ class CVAE(nn.Module):
     def __init__(self, latent_dim=20, n_classes=10, img_shape=(1, 28, 28)):
         super().__init__()
         self.label_emb = nn.Embedding(n_classes, 10)
-=
+
         self.decoder = nn.Sequential(
             nn.Linear(latent_dim + 10, 400),
             nn.ReLU(),
