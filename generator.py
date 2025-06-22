@@ -15,8 +15,9 @@ class CVAE(nn.Module):
             nn.Linear(28 * 28 + 10, 400),
             nn.ReLU()
         )
-        self.fc_mu = nn.Linear(400, latent_dim)
-        self.fc_logvar = nn.Linear(400, latent_dim)
+
+        self.mu_layer = nn.Linear(400, latent_dim)
+        self.logvar_layer = nn.Linear(400, latent_dim)
 
         self.decoder = nn.Sequential(
             nn.Linear(latent_dim + 10, 400),
@@ -29,7 +30,7 @@ class CVAE(nn.Module):
         label = self.label_emb(labels)
         x = torch.cat([x, label], dim=1)
         h = self.encoder(x)
-        return self.fc_mu(h), self.fc_logvar(h)
+        return self.mu_layer(h), self.logvar_layer(h)
 
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5 * logvar)
