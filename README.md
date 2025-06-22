@@ -1,2 +1,2 @@
-# Handwritten-Digit-Generation-Web-App_METI-Internship-Examinations
+# Handwritten-Digit-Generation-Web-App
 For METI Internship Examinations
