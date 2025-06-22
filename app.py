@@ -6,7 +6,10 @@ from generator import Generator
 @st.cache_resource
 def load_generator():
     gen = Generator()
-    gen.load_state_dict(torch.load("generator.pth", map_location="cpu"))
+    state = torch.load("generator.pth", map_location="cpu")
+    missing, unexpected = gen.load_state_dict(state, strict=False)
+    st.write("🔧 Missing keys:", missing)
+    st.write("🧩 Unexpected keys:", unexpected)
     gen.eval()
     return gen
 
