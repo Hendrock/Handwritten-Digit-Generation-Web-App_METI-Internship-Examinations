@@ -1,24 +1,24 @@
 import streamlit as st
 import torch
 import matplotlib.pyplot as plt
-from generator import Generator
+from generator import CVAEDecoder
 
 @st.cache_resource
-def load_generator():
-    gen = Generator()
-    state = torch.load("generator.pth", map_location="cpu")
-    gen.eval()
-    return gen
+def load_decoder():
+    model = CVAEDecoder()
+    model.load_state_dict(torch.load("best_cvae.pth", map_location="cpu"))
+    model.eval()
+    return model
 
-st.title("🎨 MNIST Handwritten Digit Generator")
-generator = load_generator()
+st.title("🧠 CVAE Handwritten Digit Generator")
+decoder = load_decoder()
 
-digit = st.selectbox("Select a digit to generate (0–9):", range(10))
+digit = st.selectbox("Select a digit to generate (0–9):", list(range(10)))
 if st.button("Generate 5 Samples"):
-    noise = torch.randn(5, 100)
+    z = torch.randn(5, 20)
     labels = torch.full((5,), digit, dtype=torch.long)
     with torch.no_grad():
-        imgs = generator(noise, labels).cpu()
+        imgs = decoder(z, labels)
     fig, axes = plt.subplots(1, 5, figsize=(10, 2))
     for ax, img in zip(axes, imgs):
         ax.imshow(img.squeeze(), cmap="gray")
