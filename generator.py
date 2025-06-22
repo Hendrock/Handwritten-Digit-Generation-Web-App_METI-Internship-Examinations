@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-class CVAEDecoder(nn.Module):
+class CVAE(nn.Module):
     def __init__(self, latent_dim=20, n_classes=10, img_shape=(1, 28, 28)):
         super().__init__()
         self.label_emb = nn.Embedding(n_classes, 10)
@@ -13,7 +13,7 @@ class CVAEDecoder(nn.Module):
         )
         self.img_shape = img_shape
 
-    def forward(self, z, labels):
+    def decode(self, z, labels):
         label = self.label_emb(labels)
         z = torch.cat([z, label], dim=1)
         out = self.decoder(z)
